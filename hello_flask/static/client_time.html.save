@@ -2,18 +2,17 @@
 <html>
     <head>
         <!-- head definitions go here -->
-  	 <!-- <style type=:"text/css">
-	div#test2 a{color:red;} --> 
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-	<!-- </style> -->
     </head>
-    <body style="background-color:powderblue;>     
-	<div id="test2">
-	<h1 id="mytime" style="color:white;"> </h1> 
-	</div>
+    <body style="background-color:powderblue;>
+	    <h1 id="mytime"></h1>
+	<div style = "color:black;">
+	<div id=divTest>
 	<script>
+<body style="background-color:powderblue;">
 		setInterval( function(){ $('#mytime').html( "Time is " + new Date());}, 500);
 	</script>
+	</div>
     </body>
 </html>
 
