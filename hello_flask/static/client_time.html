@@ -1,18 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- head definitions go here -->
-  	 <!-- <style type=:"text/css">
-	div#test2 a{color:red;} --> 
+    <head> 
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-	<!-- </style> -->
+	<style>
+	body{
+		background-image: url("yes2.jpg"); 
+		background-repeat:no-repeat;
+		background-attachment: fixed;
+		background-size: 100% 100%  
+	}
+	h1{
+		color: white; 
+		font-family: 'Courier New', monospace;
+		font-size: 250% 
+		left: 0;
+                line-height: 100px;
+                margin-top: -100px;
+                position: absolute;
+                text-align: center;
+                top: 50%;
+                width: 100%;
+	}		
+
+	</style>
     </head>
-    <body style="background-color:powderblue;>     
-	<div id="test2">
-	<h1 id="mytime" style="color:white;"> </h1> 
-	</div>
+    <body> 
+	
+	<audio controls>
+		<source src="THE OFFICE THEME (TRAP REMIX).mp3" type="audio/mpeg">
+	</audio>
+
+	<h1 id="mytime"> </h1> 
 	<script>
-		setInterval( function(){ $('#mytime').html( "Time is " + new Date());}, 500);
+		setInterval( function(){ $('#mytime').html(new Date());}, 500);
 	</script>
     </body>
 </html>
