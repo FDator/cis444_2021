@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- head definitions go here -->
+	     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     </head>
     <body>
-	    <form action="/backp" method="post">
+
+	<script>
+		function check_form(){
+
+			alert($('#fname').val());
+			alert($('#lname').val());
+
+			$('#login').hide();
+			$('#books').show();
+			
+			$('#cars').append('<option value="volvo">Thank you Taco</option>')
+
+
+			return false;
+
+			if($('#fname').val().length == 0){
+				return false;
+			}else{
+				return true;
+			}
+		}
+
+	</script>
+            <div id="login">
+	    	<form action="/backp" method="post">
   			<label for="fname">First name:</label><br>
   				<input type="text" id="fname" name="fname" value="John"><br>
   			<label for="lname">Last name:</label><br>
-  				<input type="text" id="lname" name="lname" value="Doe"><br><br>
-  			<input type="submit" value="Submit">
-	</form>
+  				<input type="password" id="lname" name="lname" value="Doe"><br><br>
+  			<input type="submit" value="Signup" onclick="return check_form();">
+		</form>
+	    </div>
+
+	    <div id="books" style="display:none">
+		    <h1>Buy me</h1>
+		    <select name="cars" id="cars">
+
+  		    </select>
+	    </div>
 
     </body>
 </html>

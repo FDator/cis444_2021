@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    </head>
+    <body style="color:red;">
+
+        <div style="color:blue">
+            <div id="divg">
+                Hello
+            </div>
+
+            <div id="mydiv" style="color:black">
+            </div>
+        </div>
+
+        <h2>this text</h2>
+    
+        <script> 
+		setInterval(function(){
+			$.post("/auth", { "username":"hello", "password":"1234"}, 
+				function(data, textStatus) {
+					console.log(data);
+					$('#mydiv').html(data.data['password']);
+				}, "json");
+		}, 500);
+
+
+
+        </script>
+
+    </body>
+
+</html>
