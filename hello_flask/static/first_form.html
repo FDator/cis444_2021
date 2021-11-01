@@ -6,42 +6,119 @@
     <body>
 
 	<script>
-		function check_form(){
+		
+           $(document).ready(function(){
+                        $("#Login").click(loginPage);
+                });
 
-			alert($('#fname').val());
-			alert($('#lname').val());
+                function loginPage(){
+                        alert("User form submitted!");
+                        $.ajax({
+                                type: "POST",
+                                url: "/auth3",
+                                data: $("#form1").serialize(),
+                                success:function(data)
+                                {
+                                        if(data.jwt == null)
+                                                alert(data.status + " " + data.msg);
+                                        else
+                                        {
+						localStorage.clear();
+						alert(data.jwt)
+						localStorage.setItem('token', data.jwt);
+                                                alert(localStorage.getItem('token'));
+						$('#login').hide();
+                                                $('#books').show();
+                                                getInfoBooks();
+                                        }
+                                }
+                        });
+                }
 
+                function getInfoBooks(){
+                        $.ajax({
+                                type: "GET",
+                                url: "/getBooks",
+				headers: {AuthorizeInfo: localStorage.getItem('token')},
+                                success: function(data)
+                                {
+                                	if(data.jwt == null){
+						alert(data.status + " " + data.msg);
+						window.location.reload();
+				 		alert("reloading webpage!");
+					}
+					else{
+						//alert("did you make it in the else")
+						for(var i=0; i < data.book_name.length; i++){
+							$('#bookInfo').append($('<option>',{
+							value: data.book_name[i],
+							text: 'Title: ' + data.book_name[i] + '; Price: $' + data.book_price[i]
+							}));
+						}
+					}
+                                }
+                        });
+                }
+	
+		function buttonPressed(){
+		
+		alert("Book has been purchased");
+
+		var e = document.getElementById('bookInfo');
+		var strBook = e.options[e.selectedIndex].value;
+		alert("this is str book:" + strBook);
+		
+			$.ajax({
+				type: "POST",
+				url:"/bookPurchase",
+				headers: {AuthorizeInfo: localStorage.getItem('token')},
+				data: {book:strBook},
+				success: function(data)
+				{
+				if(data.status == null)
+					alert("An error has occured :");
+				}
+			});		
+		}
+
+		function switch_form(){
 			$('#login').hide();
-			$('#books').show();
-			
-			$('#cars').append('<option value="volvo">Thank you Taco</option>')
-
-
-			return false;
-
-			if($('#fname').val().length == 0){
-				return false;
-			}else{
-				return true;
-			}
+			$('#signup').show();
+			return true;
+		}
+		function addUserInput(){
+			alert("User has Successfully Registered!");
+			return true;
 		}
 
 	</script>
-            <div id="login">
-	    	<form action="/backp" method="post">
-  			<label for="fname">First name:</label><br>
-  				<input type="text" id="fname" name="fname" value="John"><br>
-  			<label for="lname">Last name:</label><br>
-  				<input type="password" id="lname" name="lname" value="Doe"><br><br>
-  			<input type="submit" value="Signup" onclick="return check_form();">
+	
+	    <div id="login">	
+		<form id="form1">
+			<label for="username"> Username: </label><br>
+                                <input type="text" id="username" name="username" value="John"><br>
+                        <label for="password"> Password: </label><br>
+                                <input type="password" id="password" name="password" value="Doe"><br><br>
+			<input type="button" value="Login" id="Login">
+                        <input type="button" value="Signup" onclick="return switch_form();">
 		</form>
 	    </div>
 
-	    <div id="books" style="display:none">
-		    <h1>Buy me</h1>
-		    <select name="cars" id="cars">
+	    <div id="signup" style="display:none" >
+		<form action="/signup" method="post">
+		 <label for="newUsername">New Username:</label><br>
+                     	<input type="text" id="newUser" name="newUser" value="John"><br>
+                 <label for="newPassword">New Password:</label><br>
+                       	<input type="password" id="newPass" name="newPass" value="Doe"><br><br>
+                 <input type="submit" value="Signup" onclick="return addUserInput();"> 
+		</form>		
+	    </div> 	
 
-  		    </select>
+	    <div id="books" style="display:none">
+		<form action="/getBooks" id="bookGet">
+		    <h1>List of Books for Purchase:</h1>
+		    <select name="bookInfo" id="bookInfo"></select>
+		<input type="button" value="Enter Book" id="purchaseButton" onclick="buttonPressed();">
 	    </div>
 
     </body>
