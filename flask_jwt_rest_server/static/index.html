@@ -8,49 +8,116 @@
     <body>
 
 	<script>
-		function send_form(){
-			$.post("/open_api/login", { "firstname":$('#fname').val(), "password":$('#password').val()},
-                       		function(data, textStatus) {
-					//this gets called when browser receives response from server
+		
+		$(document).ready(function(){
+			$("#Login").click(loginButton);
+			$("#Signup").click(signupButton);
+			$("#Purchase").click(purchaseButton);
+		});
+		var currentUser; 
+
+		function loginButton(){
+		
+			$.ajax({
+				type: "POST",
+				url: "/open_api/login",
+				data: $("#form1").serialize(),
+				success: function(data, textStatus)
+				{
+				//this gets called when browser receives response from server
+					$('#form1').hide();
 					console.log(data.token);
-					//Set global JWT
+                                        //Set global JWT
 					jwt = data.token;
 					//make secure call with the jwt
-					get_books();
-				}, "json").fail( function(response) {
+                                        getInfoBooks();
+					currentUser = data.username;
+
+				}, 
+				error: function(response)
+				{
 					//this gets called if the server throws an error
+					var errMsg = JSON.parse(response.responseText)
 					console.log("error");
 					console.log(response);
-				});
-			return false;
+				}
+			});
 		}
 
-		function get_books(){
-			 //make secure call with the jwt
+		function signupButton(){
+			$.ajax({
+				type: "POST", 
+				url: "/open_api/signup",
+				data: $("#form2").serialize(),
+				success: function(data)
+				{
+					$('signup').hide();
+					getInfoBooks();
+					currentUser = data.username
+				}
+			});
+		}
+
+		function getInfoBooks(){
+		  	//make secure call with the jwt
 			secure_get_with_token("/secure_api/get_books", {} , function(data){
-					console.log("got books"); 
-					console.log(data); 
-					$('#buybook').show();
-					},
-                                                function(err){ console.log(err) });
+				console.log("got books");
+				console.log(data);
+				$('#books').show();
+				for(var i=0; i < data.bookN.length; i++)
+				{
+					$('#bookInfo').append($('<option>',{
+					value: data.bookN[i],
+					text: 'Title: ' + data.bookN[i] + '; Price: $' + data.bookP[i]
+					}));
+				}
+			}, function(err){ console.log(err) });
 		}
-                function buy_book(book_id){
-                         //make secure call with the jwt
-                        secure_get_with_token("/secure_api/get_books", {"book_id" : book_id} , function(data){console.log("got books"); console.log(data)},
-                                                function(err){ console.log(err) });
-                }
 
+		function purchaseButton(){
+			alert(currentUser);
+			alert($("#bookInfo").val());
+			//make secure call with the jwt
+			secure_post_with_token("/secure_api/purchase_book", {'userid': currentUser, 'bookid' : $("#bookInfo").val(), 'buytime' : new Date($.now())} , 
+			function(data)
+			{
+				alert("purchase has been successful");
+			},				                                                
+			function(err){ console.log(err) });
+		}
+		
+		function switch_form(){
+			$('#login').hide();
+			$('#signup').show();
+			return true;
+		}
+		
 	</script>
-            <div id="login">
-	    	<form >
-  			<label for="fname">First name:</label><br>
-  				<input type="text" id="fname" name="fname" value="John"><br>
-  			<label for="password">Password:</label><br>
-  				<input type="password" id="password" name="password" value="12212"><br><br>
-  			<input type="submit" value="Signup" onclick="return send_form();">
+
+	    <div id="login">
+		<form id="form1">
+			<label for="username"> Username: </label><br>
+				<input type="text" id="username" name="username" value="John"><br>
+			<label for="password"> Password: </label><br>
+					<input type="password" id="password" name="password" value="Doe"><br><br>
+			<input type="button" value="Login" id="Login">
+			<input type="button" value="Signup" onclick="return switch_form();">
 		</form>
 	    </div>
-	    <button id="buybook" onclick="buy_book(1234)" style="display:none" >Buy Book</button>
-    </body>
-</html>
 
+	    <div id="signup" style="display:none" >
+		<form id ="form2">
+			<label for="newUsername">New Username:</label><br>
+				<input type="text" id="newUser" name="newUser" value="John"><br>
+			<label for="newPassword">New Password:</label><br>								                        	
+				<input type="password" id="newPass" name="newPass" value="Doe"><br><br>
+			<input type="button" value="Signup" id ="Signup"> 
+		</form>
+	    </div>
+
+	    <div id="books" style="display:none">
+			<h1>List of Books for Purchase:</h1>
+			<select name="bookInfo" id="bookInfo"></select>
+
+		<input type="button" value="Enter Book" id="Purchase">
+	    </div>
