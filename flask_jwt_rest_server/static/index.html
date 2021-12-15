@@ -32,7 +32,8 @@
 				success: function(data, textStatus)
 				{
 				//this gets called when browser receives response from server
-					$('#form1').hide();
+					$('#login').remove();
+					//$('#form1').hide();
 					console.log(data.token);
                                         //Set global JWT
 					jwt = data.token;
@@ -44,6 +45,7 @@
 				}, 
 				error: function(response)
 				{
+					alert("Invalid Login");
 					//this gets called if the server throws an error
 					var errMsg = JSON.parse(response.responseText)
 					console.log("error");
@@ -111,22 +113,28 @@
 	    
 	    <div id="login">
 		<form id="form1">
+			<h2 id="header"> GeoLocation Tracker </h2>
 			<label for="username"> Username: </label><br>
 				<input type="text" id="username" name="username" value="John"><br>
 			<label for="password"> Password: </label><br>
 					<input type="password" id="password" name="password" value="Doe"><br><br>
-			<input type="button" value="Login" id="Login">
-			<input type="button" value="Signup" onclick="return switch_form();">
+			<div id="logButton">
+				<input type="button" value="Login" id="Login" class="button button1">
+				<input type="button" value="Signup" class="button button2" onclick="return switch_form();">
+			</div>
 		</form>
 	    </div>
 
 	    <div id="signup" style="display:none" >
 		<form id ="form2">
+			<h2 id="header"> Geolocation Tracker Sign-Up </h2>
 			<label for="newUsername">New Username:</label><br>
 				<input type="text" id="newUser" name="newUser" value="John"><br>
 			<label for="newPassword">New Password:</label><br>								                        	
 				<input type="password" id="newPass" name="newPass" value="Doe"><br><br>
-			<input type="button" value="Signup" id ="Signup"> 
+			<div id="logButton">
+			<input type="button" value="Signup" id ="Signup" class="button button1"> 
+			</div>
 		</form>
 	    </div>
 

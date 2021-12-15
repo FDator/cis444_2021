@@ -3,11 +3,21 @@
 }
 
 html,
-body {
+/*Makes the map fill the whole page*/
+body{
 	height: 100%;
 	margin: 0;
 	padding: 0;
  }
+
+/*seperate body to avoid changing html*/
+body{
+	background-image: url("https://wallup.net/wp-content/uploads/2019/09/255736-landscapes-nature.jpg");
+	background-repeat: no-repeat;
+    	background-size: cover;
+        position: relative;
+	overflow: hidden;
+}
 
 .custom-map-control-button {
 	  
@@ -25,4 +35,65 @@ body {
 
 .custom-map-control-button:hover {
 	  background: #ebebeb;
- }
+}
+
+#form1, #form2{
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	margin: auto;
+	justify-content: center;
+	background-color: white;
+	padding: 50px;
+	border-radius: 20px;
+	max-width: 600px;
+}
+
+#login, #signup{
+	margin-top: 200px;	
+}
+
+#header{
+	text-align: center; 
+	font-size: 43px;
+}
+
+#logButton{
+	display: flex;
+	
+}
+
+.button {
+	border: none;
+	color: white;
+	padding: 16px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+
+.button1 {
+	background-color: white; 
+	color: black; 
+	border: 2px solid #4CAF50;
+}
+
+.button1:hover {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.button2 {
+	background-color: white; 
+	color: black; 
+	border: 2px solid #008CBA;
+}
+
+.button2:hover {
+	background-color: #008CBA;
+	color: white;
+}
