@@ -84,3 +84,5 @@ def db_purchases(userid, bookid, buytime):
     print(submission)
     cur.execute(submission)
     global_db_con.commit()
+
+

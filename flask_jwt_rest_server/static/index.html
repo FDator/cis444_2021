@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+	     <title>Geolocation</title>
 	     <script src="https://code.jquery.com/jquery-3.6.0.js" 
 		     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	     <script src="/static/cis444.js"></script>
+	     <script id = "yes" src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+	     <link rel="stylesheet" type="text/css" href="./api.css" />
+	     <script src="/static/map.js"></script>
     </head>
     <body>
 
@@ -14,6 +18,9 @@
 			$("#Signup").click(signupButton);
 			$("#Purchase").click(purchaseButton);
 		});
+
+		//Login Features		
+
 		var currentUser; 
 
 		function loginButton(){
@@ -30,7 +37,8 @@
                                         //Set global JWT
 					jwt = data.token;
 					//make secure call with the jwt
-                                        getInfoBooks();
+                                        //getInfoBooks();
+					createMap();
 					currentUser = data.username;
 
 				}, 
@@ -73,6 +81,12 @@
 				}
 			}, function(err){ console.log(err) });
 		}
+		
+		function createMap(){
+			secure_get_with_token("/secure_api/create_map", {}, function(data){
+			initMap();
+			}, function(err){console.log(err)});
+		}
 
 		function purchaseButton(){
 			alert(currentUser);
@@ -93,7 +107,8 @@
 		}
 		
 	</script>
-
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI4GkEkTOVuLH_ejdDJuKU7NGu1g2oXI8" async></script>
+	    
 	    <div id="login">
 		<form id="form1">
 			<label for="username"> Username: </label><br>
@@ -121,3 +136,5 @@
 
 		<input type="button" value="Enter Book" id="Purchase">
 	    </div>
+
+	    <div id="map"></div>
